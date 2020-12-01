@@ -1,0 +1,45 @@
+body {
+  background-color:white;
+ align-content: center;
+    text-decoration-color: darkolivegreen;
+}
+.container{
+          height: 30px;
+          color: darkolivegreen;
+          
+}
+#location{
+    
+    height:50px;
+    width:30%;
+    
+}
+
+#search{
+    height: 55px;
+    width:5%;
+}
+h1 {
+    padding-top:50px;
+    text-align: left;
+    font-style: oblique;
+    
+}
+#image{
+    vertical-align: center;
+}
+#zip{
+    color: black;
+}
+h2{
+    color: darkolivegreen;
+    font-size: 18px;
+  
+}
+h3{
+    padding-top: 30px;
+}
+.container1{
+    padding-top: 365px;
+}
+
