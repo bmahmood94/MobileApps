@@ -1,0 +1,130 @@
+var API_KEY = "e3fed2d026dba4e952cf2300145e65c1"//api given by opentweather after suscription.
+
+document.addEventListener("deviceready", function () {//waits for device to be ready
+
+    document.getElementById("city").onclick = function () {   //looks for if "city" button is clicked 
+
+        var loc = document.getElementById("location").value;///a variable where we store the input
+        if (isNaN(loc) == false) {//if it is a char type input then send the error code
+            return $('#weather').html('<h2 id="weather">Please enter a city</h2>');
+        }
+
+        if (loc != 0) {//from line 16-20 is if the input is not empty then call the api with the city name and due to openweather offering the service i used imperial to convert
+            $.ajax({
+                url: 'https://api.openweathermap.org/data/2.5/weather?q=' + loc + "&units=imperial" + "&appid=" + API_KEY,
+                type: "GET",
+                dataType: "jsonp",
+                success: function (data) {//when a success do this...
+                    var call = display(data, loc);//this is to call the function that will display the results in the html
+                    $("#weather").html(call);//pasing that function and results into weather to display
+                }
+
+            });
+
+        }
+        else {
+
+            $('#weather').html('<h2>doesnt seem like you entered anything please try again</h2>');//if input or weather was invalid then send error code
+        }
+
+    };
+
+    document.getElementById("zip").onclick = function () {//waits for the zip button to be pushed
+        var loc = document.getElementById("location").value;//variable that recieves the input
+        if (isNaN(loc) == true) {//if it the input type isnt numerical send an error code
+            return $('#weather').html('<h2 id="weather">Please enter a Zip Code</h2>');
+        }
+        
+        if (loc != 0) {//for lines 41-45 if input isnt empty then call the api with zip and correct api and it coneverts with imperial
+            $.ajax({
+                url: 'https://api.openweathermap.org/data/2.5/weather?zip=' + loc + "&units=imperial" + "&appid=" + API_KEY,
+                type: "GET",
+                dataType: "jsonp",
+                success: function (data) {//on success do this..
+                   
+
+                    var call = display(data);//call the display function to display information
+                    $("#weather").html(call);//send results to html in the weather id
+
+                },
+                  error: function () {//on error do this
+                        alert("Sorry something didn't correctly go through");
+                    }
+
+            });
+        }
+        else {
+            $('#weather').html('<h2>Hmm... something doesnt seem correct. Please try again</h2>');//if empty do this
+        }
+
+    };
+    
+
+    if ("geolocation" in navigator) {//this checks and sees if the browser allows us to get location
+        document.getElementById("gps").onclick = function () {//when the gps button clicked
+            navigator.geolocation.getCurrentPosition(gotLocation);//, { enableHighAccuracy: true, timeout: 20000 });
+            //this portion is to get the current geolocation of the user, this portion of code was not bad but whenever i did add the enableHighAccuracy my gps would stop working not sure why that occurs but i get a 404 error.
+            function gotLocation(position) {
+                var lat = position.coords.latitude;//retrieves the latitiude
+                var lon = position.coords.longitude;//retrieves the longitude
+                //lines 75-79 are to call the api in openweathermap and send the latitiude and longitude of the users location
+                $.ajax({
+                    url: 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + "&lon=" + lon + "&units=imperial" + "&appid=" + API_KEY,
+                    type: "GET",
+                    dataType: "jsonp",
+                    success: function (data) {//on succes do this
+                        
+                        var call = display(data);//calls display to setup results
+                                                //var call2 = displayIframe(data);
+
+                        var call3 = prepareFrame(data);//calls function that will prepare the iframe the way we want
+
+                        
+                        $("#weather").html(call);//sends results back to html id
+                      
+                     //    $("#weather2").html(call2);
+                         $("#weather3").html(call3);//sends results back to html id
+
+                        
+                    },
+                    error: function () {//upon error do this
+                        
+                        alert("Sorry something didn't correctly go through");
+                    }
+
+                });
+
+                
+              
+                
+            }
+            //TODO : Define event handler for gps button click
+        }
+    };
+
+});
+ function prepareFrame(data) {
+     
+        var ifrm = document.createElement("iframe");
+     //access the google maps api
+        ifrm.setAttribute("src", "https://www.google.com/maps/embed/v1/view?key=AIzaSyC0aMKRrlt_iydbWBFF5EWGC9pVzL0bAeI&center="+data.coord.lat+"," +data.coord.lon +"&zoom=18&maptype=satellite");
+     //sets the paramaters
+        ifrm.style.width = "450";
+        ifrm.style.height = "250";
+        ifrm.style.frameborder = "0";
+        document.body.appendChild(ifrm);
+    }
+//function displayIframe(data) {
+   // return '<iframe width="450" height="250" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/view?key=AIzaSyC0aMKRrlt_iydbWBFF5EWGC9pVzL0bAeI&center='+data.coord.lat+"," +data.coord.lon +'&zoom=18&maptype=satellite" allowfullscreen></iframe>';
+//};
+function display(data) {
+    return "<h2>City Name: <strong>" + data.name + "</strong></h2>" +//displays city name 1
+        "<h2>City ID: " + data.sys.id + " </strong></h2>" + //displays city id
+        "<h2>Temperature: " + data.main.temp + " F</h2>" +//displays temperatture in farenheit
+        "<h2>Main: " + data.weather[0].main + " </h2>" +//displays the sky
+        "<h2>Cloudiness: " + data.weather[0].description + " </h2>" +//description of the clouds
+        "<h2>Wind Speed: " + data.wind.speed + " m/h</h2>" +//wind speed
+        "<h2>Humidity: " + data.main.humidity + " % </h2>" +//humidity
+        "<h2>Pressure: " + data.main.pressure + " </h2>" +//pressure
+        "<h2>Latitude: " + data.coord.lat + ", Longitude" + data.coord.lon + " </h2>";//lat and lon
+};
