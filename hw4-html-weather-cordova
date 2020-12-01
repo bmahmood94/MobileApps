@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta name="author" content="Belal Mahmood">
+   <meta name="description" content="A responsive weather grabber">
+        
+   <title>GO OUTSIDE! WEATHER</title>
+   <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+   <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.6.2.min.js"></script>
+        <!--jQuery, linked from a CDN-->
+    <script type="text/javascript" src="cordova.js"></script>
+    <script src="index.js"></script>
+    <script src="text/jquery"></script>
+   <script type="text/javascript" src="https://use.typekit.com/oya4cmx.js"></script>
+   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+   <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+<div class="container">        
+            <header>
+                <h1>GO OUTSIDE!</h1>
+                <div>
+                    <img src="Camping.jpg" alt="Camping" id="image">
+                </div>
+            </header>
+    
+    <div>
+   
+            <input type="text" placeholder="Please enter an area to begin" id="location">
+                <button id="zip">Zip Code</button>
+                <button id="city">City</button>
+                <button id="gps">GPS</button>
+   
+    
+    </div>
+    </div>
+<div class="container1">
+   <h2 id="weather"> </h2>
+    </div>
+<div>
+    <h3 id="weather3"> 
+    </h3>
+</div>
+ 
+
+<footer>Created by Belal Mahmood Z23123449</footer>
+
+</body>
+</html>
